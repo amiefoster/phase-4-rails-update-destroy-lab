@@ -21,17 +21,22 @@ class PlantsController < ApplicationController
   # PATCH /plants/:id
   def update
     plant = Plant.find_by(id: params[:id])
-    plant.update(plant_params)
-    render json: plant
-    
+    if plant
+      plant.update(plant_params)
+      render json: plant
+    else render json: { error: "Bird not found" }, status: :not_found
+    end    
   end
 
   # DESTROY /plants/:id
   def destroy
     plant = Plant.find(params[:id])
-    plant.destroy
-    head :no_content
-    
+    if plant
+      plant.destroy
+      head :no_content
+    else render json: { error: "Plant not found" }, status: :not_found
+    end
+
   end
 
   private
